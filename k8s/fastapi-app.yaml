@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      containers:
+      - name: fastapi
+        image: fastapi-mongo-app:latest
+        imagePullPolicy: Never # Crucial for Minikube local images
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "250m"
+            memory: "256Mi"
+        env:
+        - name: MONGO_USER
+          valueFrom: { secretKeyRef: { name: mongo-creds, key: username } }
+        - name: MONGO_PASS
+          valueFrom: { secretKeyRef: { name: mongo-creds, key: password } }
+        - name: MONGO_HOST
+          value: "mongodb-0.mongodb-service"
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: fastapi-service
+spec:
+  type: NodePort
+  selector: 
+    app: fastapi
+  ports: 
+  - port: 8000
+    nodePort: 30001
+
+
