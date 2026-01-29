@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: fastapi
-        image: fastapi-mongo-app:latest
-        imagePullPolicy: Never # Crucial for Minikube local images
+        image: dhiraj918106/fastapi-mongo-app:latest
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: "100m"
