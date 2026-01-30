@@ -10,6 +10,7 @@ A production-ready blueprint for a containerized **FastAPI** application using a
 * **Secure Credentials**: Uses `python-dotenv` for local dev and **K8s Secrets** for cluster environments.
 * **Automated CI/CD**: GitHub Actions workflow to build and push images to **Docker Hub**.
 * **Headless Service**: Provides stable network identities for the database.
+* **Self-Healing**: Readiness and Liveness probes ensure traffic only hits healthy pods and restarts crashed ones.
 
 ## 📁 Project Structure
 
