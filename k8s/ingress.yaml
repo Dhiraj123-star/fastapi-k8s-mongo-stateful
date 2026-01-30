@@ -3,8 +3,14 @@ kind: Ingress
 metadata:
   name: fastapi-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
+  tls: 
+  - hosts:
+      - fastapi.local
+    secretName: fastapi-tls
+    
   rules: 
   - host: fastapi.local
     http:

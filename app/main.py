@@ -1,11 +1,16 @@
 import os
 from fastapi import FastAPI,HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
+from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
 load_dotenv()
 app = FastAPI(title="FastAPI-K8s-Mongo-Stateful")
+
+# Add middleware to handle headers from Traefik
+app.add_middleware(ProxyHeadersMiddleware,trusted_hosts="*")
+
 
 # Credentials from environment variables
 DB_USER = os.getenv("MONGO_USER", "admin")
