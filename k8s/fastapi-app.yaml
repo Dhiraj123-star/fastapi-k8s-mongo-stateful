@@ -15,6 +15,25 @@ spec:
       containers:
       - name: fastapi
         image: dhiraj918106/fastapi-mongo-app:latest
+        ports:
+        - containerPort: 8000
+        # Add the Readiness
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5 # Wait 5 seconds before first check
+          periodSeconds: 10 # Check every 10 seconds
+          failureThreshold: 3 # If it fails 3 times, mark as NOT READY
+
+        # Add a Liveness Probe(restarts the pod if it hangs)
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+
         imagePullPolicy: Always
         resources:
           requests:

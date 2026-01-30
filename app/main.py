@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -21,6 +21,23 @@ db = client[DB_NAME]
 class DataEntry(BaseModel):
     title: str
     content: dict
+
+@app.get("/health")
+async def health_check():
+    try:
+        # Check if we can reach the database
+        await client.admin.command("ping")
+        return {
+            "status":"healthy",
+            "database":"connected"
+        }
+    except Exception:
+        #  FastAPI return status code 503 if database is down
+        raise HTTPException(
+            status_code=503,
+            detail="Database not reachable!!"
+        )
+        
 
 @app.get("/")
 async def root():
