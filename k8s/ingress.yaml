@@ -3,14 +3,16 @@ kind: Ingress
 metadata:
   name: fastapi-ingress
   annotations:
+  # Traefik specific redirect to HTTPS 
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
+  ingressClassName: traefik
   tls: 
   - hosts:
-      - fastapi.local
+    - fastapi.local
     secretName: fastapi-tls
-    
+
   rules: 
   - host: fastapi.local
     http:
